@@ -34,7 +34,7 @@ function MessageArea() {
     try {
       const formData = new FormData();
       formData.append("message", input);
-      if(backendImage) {
+      if (backendImage) {
         formData.append("image", backendImage);
       }
       const result = await axios.post(
@@ -70,13 +70,13 @@ function MessageArea() {
   }, []);
 
   useEffect(() => {
-    socket?.on("newMessage",(mess)=> {
+    socket?.on("newMessage", (mess) => {
       dispatch(setMessages([...messages, mess]));
-    })
+    });
     return () => {
       socket.off("newMessage");
-    }
-  }, [messages,setMessages]);
+    };
+  }, [messages, setMessages]);
 
   return (
     <div className="w-full h-[100vh] bg-black relative">
@@ -100,21 +100,29 @@ function MessageArea() {
           />
         </div>
 
-        <div className="text-white font-semibold cursor-pointer text-[18px] " onClick={() => navigate(`/profile/${selectedUser?.userName}`)}>
+        <div
+          className="text-white font-semibold cursor-pointer text-[18px] "
+          onClick={() => navigate(`/profile/${selectedUser?.userName}`)}
+        >
           <div>{selectedUser.userName}</div>
           <div className="text-[14px] text-gray-400">{selectedUser.name}</div>
         </div>
       </div>
 
       <div className="w-full h-[80%] pt-[100px] px-[40px] flex flex-col gap-[50px] overflow-auto bg-black">
-        {messages &&
+        {messages && messages.length > 0 ? (
           messages.map((mess, index) =>
-            mess?.sender == userData?._id ? (
+            mess?.sender === userData?._id ? (
               <SenderMessage message={mess} key={index} />
             ) : (
               <ReceiverMessage message={mess} key={index} />
             )
-          )}
+          )
+        ) : (
+          <div className="text-white text-center text-[18px] mt-[50px]">
+            No messages yet. Start the conversation!
+          </div>
+        )}
       </div>
 
       <div className="w-full h-[80px] fixed bottom-0 flex justify-center items-center bg-black z-[100]">
