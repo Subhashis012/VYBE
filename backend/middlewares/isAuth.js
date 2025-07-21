@@ -1,12 +1,21 @@
-const auth = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ message: "Unauthorized access" });
+import jwt from 'jsonwebtoken';
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; 
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-};
+const isAuth = async (req, res, next) => {
+    try {
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized access" });
+        }
+
+        const verifyToken = await jwt.verify(token, process.env.JWT_SECRET);
+
+        req.userId = verifyToken.userId;
+
+        next();
+    } catch (error) {
+        return res.status(500).json({ message: "Token verification failed" });
+    }
+}
+
+export default isAuth;
