@@ -5,9 +5,11 @@ import http from "http";
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = ['http://localhost:5173', 'https://vybe-4jbw.onrender.com'];
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://vybe-4jbw.onrender.com"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
 });

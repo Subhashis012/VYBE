@@ -13,9 +13,10 @@ import { app, server } from "./socket.js";
 
 dotenv.config();
 
+const allowedOrigins = ['http://localhost:5173', 'https://vybe-4jbw.onrender.com'];
 
 app.use(cors({
-  origin: ["http://localhost:5173", "https://vybe-4jbw.onrender.com"],
+  origin: allowedOrigins,
   credentials: true,
 }))
 app.use(express.json());
