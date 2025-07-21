@@ -1,14 +1,14 @@
+// components/GetPrevChatUsers.jsx
 import axios from "axios";
-import React, { useEffect } from "react";
-import { serverUrl } from "../App";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFollowing, setUserData } from "../redux/userSlice";
-import { setCurrentUserStory } from "../redux/storySlice";
 import { setPrevChatUsers } from "../redux/messageSlice";
+import { serverUrl } from "../App";
 
-const getPrevChatUsers = () => {
-    const dispatch = useDispatch();
-    const {messages} = useSelector((state) => state.message);
+function GetPrevChatUsers() {
+  const dispatch = useDispatch();
+  const { messages } = useSelector((state) => state.message);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -16,14 +16,15 @@ const getPrevChatUsers = () => {
           withCredentials: true,
         });
         dispatch(setPrevChatUsers(result.data));
-        
       } catch (error) {
         console.log("Error fetching current user:", error);
       }
     };
+
     fetchUser();
   }, [messages]);
 
-};
+  return null; // no UI
+}
 
-export default getPrevChatUsers;
+export default GetPrevChatUsers;
