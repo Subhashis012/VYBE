@@ -16,9 +16,20 @@ dotenv.config();
 const allowedOrigins = ['http://localhost:5173', 'https://vybe-4jbw.onrender.com'];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // allow requests with no origin (curl, mobile apps)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS policy mismatch"));
+    }
+  },
   credentials: true,
-}))
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.options('*', cors());
 app.use(express.json());
 app.use(cookieParser());
 
