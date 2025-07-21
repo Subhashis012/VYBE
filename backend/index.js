@@ -15,7 +15,7 @@ dotenv.config();
 
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://vybe-4jbw.onrender.com"],
   credentials: true,
 }))
 app.use(express.json());
